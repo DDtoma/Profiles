@@ -1,0 +1,106 @@
+Config { 
+
+   -- appearance
+     font =         "xft:SourceCodePro Momo:size=9:bold:antialias=true"
+   , bgColor =      "#7865c5"
+   , fgColor =      "#f1edfb"
+   , position =     Bottom
+   , border =       BottomB
+   , borderColor =  "#646464"
+
+   -- layout
+   , sepChar =  "%"   -- delineator between plugin names and straight text
+   , alignSep = "}{"  -- separator between left-right alignment
+   , template = "[%multicpu%]━[%coretemp%]━[%memory%]━[%dynnetwork%]}{[%battery%]"
+
+   -- general behavior
+   , lowerOnStart =     True    -- send to bottom of window stack on start
+   , hideOnStart =      False   -- start with window unmapped (hidden)
+   , allDesktops =      True    -- show on all desktops
+   , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
+   , pickBroadest =     False   -- choose widest display (multi-monitor)
+   , persistent =       True    -- enable/disable hiding (True = disabled)
+
+   -- plugins
+   --   Numbers can be automatically colored according to their value. xmobar
+   --   decides color based on a three-tier/two-cutoff system, controlled by
+   --   command options:
+   --     --Low sets the low cutoff
+   --     --High sets the high cutoff
+   --
+   --     --low sets the color below --Low cutoff
+   --     --normal sets the color between --Low and --High cutoffs
+   --     --High sets the color above --High cutoff
+   --
+   --   The --template option controls how the plugin is displayed. Text
+   --   color can be set by enclosing in <fc></fc> tags. For more details
+   --   see http://projects.haskell.org/xmobar/#system-monitor-plugins.
+   , commands = 
+
+        -- weather monitor
+        [ Run Weather "RJTT" [ "--template", "<skyCondition> | <fc=#68a8c5><tempC></fc>°C | <fc=#68a8c5><rh></fc>% | <fc=#68a8c5><pressure></fc>hPa"
+                             ] 36000
+
+        -- network activity monitor (dynamic interface resolution)
+        , Run DynNetwork     [ "--template" , "<icon=/home/ddtoma/.i3/xbm-icons/up.xbm/><tx>kB/s|<icon=/home/ddtoma/.i3/xbm-icons/down.xbm/><rx>kB/s"
+                             , "--Low"      , "1000"       -- units: kB/s
+                             , "--High"     , "5000"       -- units: kB/s
+                             , "--low"      , "green"
+                             , "--normal"   , "orange"
+                             , "--high"     , "red"
+                             ] 10
+
+        -- cpu activity monitor
+        , Run MultiCpu       [ "--template" , "<icon=/home/ddtoma/.i3/xbm-icons/load.xbm/>: <total0>%|<total1>%|<total2>%|<total3>%"
+                             , "--Low"      , "50"         -- units: %
+                             , "--High"     , "85"         -- units: %
+                             , "--low"      , "green"
+                             , "--normal"   , "orange"
+                             , "--high"     , "red"
+                             ] 10
+
+        -- cpu core temperature monitor
+        , Run CoreTemp       [ "--template" , "<icon=/home/ddtoma/.i3/xbm-icons/temp.xbm/>: <core0>°C|<core1>°C"
+                             , "--Low"      , "70"        -- units: °C
+                             , "--High"     , "80"        -- units: °C
+                             , "--low"      , "green"
+                             , "--normal"   , "orange"
+                             , "--high"     , "red"
+                             ] 50
+                          
+        -- memory usage monitor
+        , Run Memory         [ "--template" ,"<icon=/home/ddtoma/.i3/xbm-icons/mem.xbm/>: <usedratio>%"
+                             , "--Low"      , "40"        -- units: %
+                             , "--High"     , "90"        -- units: %
+                             , "--low"      , "green"
+                             , "--normal"   , "orange"
+                             , "--high"     , "red"
+                             ] 10
+
+        -- battery monitor
+        , Run Battery        [ "--template" , "<icon=/home/ddtoma/.i3/xbm-icons/power-bat.xbm/><acstatus>"
+                             , "--Low"      , "20"        -- units: %
+                             , "--High"     , "80"        -- units: %
+                             , "--low"      , "red"
+                             , "--normal"   , "orange"
+                             , "--high"     , "green"
+
+                             , "--" -- battery specific options
+                                       -- discharging status
+                                       , "-o"	, "<left>% (<timeleft>)"
+                                       -- AC "on" status
+                                       , "-O"	, "<fc=#dAA520>Charging</fc>"
+                                       -- charged status
+                                       , "-i"	, "<fc=#006000>Charged</fc>"
+                             ] 50
+
+        -- time and date indicator 
+        --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
+        , Run Date           "<fc=#f1edfb>%F (%a) %T</fc>" "date" 10
+
+        -- keyboard layout indicator
+        , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")
+                             , ("us"         , "<fc=#8B0000>US</fc>")
+                             ]
+        ]
+   }

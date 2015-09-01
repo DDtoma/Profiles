@@ -1,0 +1,10 @@
+依赖软件
+i3-gaps-git
+i3status
+j4-dmenu-desktop
+xmobar
+pulseaudio
+awesome-ttf
+
+配置
+将i3/.xmobarrc链接到~目录下
