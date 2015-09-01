@@ -1,0 +1,154 @@
+--- result-src.xsl	2012-03-16 23:05:33.710374482 +0800
++++ result.xsl	2012-03-16 23:06:14.190375830 +0800
+@@ -8,12 +8,15 @@
+ 				<!--link href="css/default.css" rel="stylesheet" type="text/css"/-->
+ 				<!--<link href="css/new.css" rel="stylesheet" type="text/css"/>-->
+ 				<!--<script language="javascript" src="js/default.js"/>-->
++				<link href="file:///opt/eyoudao/detail/css/default.css" rel="stylesheet" type="text/css"/>
++				<script language="javascript" src="file:///opt/eyoudao/detail/js/default.js"/>
+ 			</head>
+ 			<body>
+     <div id="actionTips" style="display:none">
+         <div class="at-container">正在查询……</div>
+     </div>
+ 				<div id="results">
++<audio id="my_sound"></audio>
+ 					<a href="javascript:void(0);" class="go-top sp" id="go-top"  hidefocus="true">go top</a>
+ 					<div id="result_navigator" class="result_navigator">
+ 						<div class="nav-list">
+@@ -211,7 +214,7 @@
+ 															<xsl:attribute name="class">title</xsl:attribute>
+ 															<xsl:attribute name="style">text-decoration:none</xsl:attribute>
+ 															<xsl:attribute name="href">
+-                      app:ds:<xsl:value-of select="./word"/></xsl:attribute>
++                      <xsl:value-of select="./word"/></xsl:attribute>
+ 															<xsl:attribute name="onclick">
+                       ctlog(this, '<xsl:call-template name="standard_return_phrase"/>' , 0, 'deskdict.main.noresult.typo' , 1, 'CLICK',  '点击typo');
+                     </xsl:attribute>
+@@ -249,7 +252,7 @@
+                     </xsl:attribute>
+ 														<xsl:attribute name="style">text-decoration:none</xsl:attribute>
+ 														<xsl:attribute name="href">
+-                      app:trans:<xsl:value-of select="yodaodict/input" disable-output-escaping="yes"/></xsl:attribute>有道翻译</xsl:element>，翻译结果仅供参考
++                      <xsl:value-of select="yodaodict/input" disable-output-escaping="yes"/></xsl:attribute>有道翻译</xsl:element>，翻译结果仅供参考
+                 </p>
+ 											</div>
+ 										</div>
+@@ -440,7 +443,7 @@
+ 															<xsl:element name="a">
+ 																<xsl:attribute name="style">text-decoration:none</xsl:attribute>
+ 																<xsl:attribute name="href">
+-                          app:lj:<xsl:value-of select="/yodaodict/input"/>?ljtype=blng&amp;ljblngcont=0
++                          <xsl:value-of select="/yodaodict/input"/>?ljtype=blng&amp;ljblngcont=0
+                         </xsl:attribute>
+ 																<xsl:attribute name="onclick">
+                           ctlog('', '' , 0, 'deskdict.main.ljcompare' , 1, 'CLICK',  '在例句中比较'); 
+@@ -545,7 +548,7 @@
+ 																		<span class="contentTitle">
+ 																			<xsl:element name="a">
+ 																				<xsl:attribute name="href">
+-                                  app:ds:<xsl:value-of select="./key"/></xsl:attribute>
++                                  <xsl:value-of select="./key"/></xsl:attribute>
+ 																				<xsl:attribute name="target">_self</xsl:attribute>
+ 																				<xsl:value-of select="./key"/>
+ 																			</xsl:element>
+@@ -566,7 +569,7 @@
+ 																		<span class="contentTitle">
+ 																			<xsl:element name="a">
+ 																				<xsl:attribute name="href">
+-                                  app:ds:<xsl:value-of select="./key"/></xsl:attribute>
++                                  <xsl:value-of select="./key"/></xsl:attribute>
+ 																				<xsl:attribute name="target">_self</xsl:attribute>
+ 																				<xsl:value-of select="./key"/>
+ 																			</xsl:element>
+@@ -691,7 +694,7 @@
+                                   ctlog('', '<xsl:call-template name="standard_return_phrase"/>' , 0, 'deskdict.main.jinyici' , 1, 'CLICK',  '点击同近义词');
+                                 </xsl:attribute>
+ 																			<xsl:attribute name="href">
+-                                  app:ds:<xsl:value-of select="."/></xsl:attribute>
++                                  <xsl:value-of select="."/></xsl:attribute>
+ 																			<xsl:attribute name="target">_self</xsl:attribute>
+ 																			<xsl:value-of select="."/>
+ 																		</xsl:element>
+@@ -711,7 +714,7 @@
+                                   ctlog('', '<xsl:call-template name="standard_return_phrase"/>' , 0, 'deskdict.main.tonggenci' , 1, 'CLICK',  '点击同根词');
+                                 </xsl:attribute>
+ 																<xsl:attribute name="href">
+-                         app:ds:<xsl:value-of select="rel-word-dict/stem"/></xsl:attribute>
++                         <xsl:value-of select="rel-word-dict/stem"/></xsl:attribute>
+ 																<xsl:value-of select="rel-word-dict/stem"/>
+ 															</xsl:element>
+ 														</span>
+@@ -726,7 +729,7 @@
+                                   ctlog('', '<xsl:call-template name="standard_return_phrase"/>' , 0, 'deskdict.main.tonggenci' , 1, 'CLICK',  '点击同根词');
+                                 </xsl:attribute>
+ 																		<xsl:attribute name="href">
+-                                                            app:ds:<xsl:value-of select="."/></xsl:attribute>
++                                                            <xsl:value-of select="."/></xsl:attribute>
+ 																		<xsl:value-of select="."/>
+ 																	</xsl:element>
+ 																</span>
+@@ -961,7 +964,7 @@
+ 																See Also: 
+ 																<xsl:for-each select="./seeword">
+ 																
+-																<xsl:element name="a"><xsl:attribute name="href">app:ds:<xsl:value-of select="."/></xsl:attribute>
++																<xsl:element name="a"><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+ 																			<xsl:attribute name="target">_self</xsl:attribute>
+ 																			<xsl:attribute name="style">cursor: pointer;</xsl:attribute>
+ 																			<xsl:attribute name="class">sp do-detail</xsl:attribute>
+@@ -979,7 +982,7 @@
+ 																See:
+ 																<xsl:for-each select="./sees/seeword">
+ 																
+-																<xsl:element name="a"><xsl:attribute name="href">app:ds:<xsl:value-of select="."/></xsl:attribute>
++																<xsl:element name="a"><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+ 																			<xsl:attribute name="target">_self</xsl:attribute>
+ 																			<xsl:attribute name="style">cursor: pointer;</xsl:attribute>
+ 																			<xsl:value-of select="."/>
+@@ -1032,7 +1035,7 @@
+ 																See:
+ 																<xsl:for-each select="./sees/seeword">
+ 																
+-																<xsl:element name="a"><xsl:attribute name="href">app:ds:<xsl:value-of select="."/></xsl:attribute>
++																<xsl:element name="a"><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+ 																			<xsl:attribute name="target">_self</xsl:attribute>
+ 																			<xsl:attribute name="style">cursor: pointer;</xsl:attribute>
+ 																			<xsl:value-of select="."/>
+@@ -1047,7 +1050,7 @@
+ 																<xsl:for-each select="./seeAlsos/seeword">
+ 																
+ 																<xsl:element name="a">
+-																			<xsl:attribute name="href">app:ds:<xsl:value-of select="."/></xsl:attribute>
++																			<xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+ 																			<xsl:attribute name="target">_self</xsl:attribute>
+ 																			<xsl:value-of select="."/><xsl:if test="not(position() = count(../seeword))">, </xsl:if>
+ 																</xsl:element>
+@@ -1092,7 +1095,7 @@
+ 												
+ 												<xsl:element name="a">
+ 																				<xsl:attribute name="href">
+-														  app:ds:<xsl:value-of select="."/></xsl:attribute>
++														  <xsl:value-of select="."/></xsl:attribute>
+ 																				<xsl:attribute name="target">_self</xsl:attribute>
+ 																				<xsl:value-of select="."/><xsl:if test="not(position() = count(../phrase))">, </xsl:if>
+ 																			</xsl:element>
+@@ -1428,7 +1431,7 @@
+ 								<div class="trans-wrapper">
+ 		 目前无法连接服务器，请检查您的网络连接或者查看<a>
+ 										<xsl:attribute name="href">
+-					app:FAQ:/res/faq.html
++					/res/faq.html
+ 				</xsl:attribute>
+ 										<xsl:attribute name="target">_self</xsl:attribute>
+ 				FAQ页面</a>。
+@@ -1446,6 +1449,9 @@
+ 					</div>
+ 				</div>
+                 <div id="tab-flag" style="display:none">dict</div>
++				<script type="text/javascript">
++					dict.result.init();main();toggleFav("1");
++				</script>
+ 			</body>
+ 		</html>
+ 	</xsl:template>

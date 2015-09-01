@@ -1,0 +1,196 @@
+--- unpack-all-min-src.js	2012-03-16 14:24:28.165473017 +0800
++++ default.js	2012-03-16 22:55:05.410353559 +0800
+@@ -5251,6 +5251,7 @@
+ var g_bFlashOcxInstall = false;
+ var g_bShowAds = "ShowAds";
+ var g_eadTimer = 0;
++var INBOOK = 0;
+ function ChangeSearchCssSkin(a) {
+ 	try {
+ 		if (document.getElementById("strksrchskincss") == null) {
+@@ -5312,6 +5313,7 @@
+ 	}
+ }
+ function ctlog(h, a, g, c, m, l, k) {
++	return false;
+ 	var n = new Date();
+ 	var b = "&rnd=" + n.getTime();
+ 	var f = "";
+@@ -5530,14 +5532,17 @@
+ 			}
+ 		}
+ 		if (d == "" && document.getElementById("ead_dictr_ins") != null) {
+-			var a = window.external.loadString(g_bShowAds);
++			//var a = window.external.loadString(g_bShowAds);
++			a = g_bShowAds;
+ 			if (document.getElementById("show_ins_adv") != null || a == "true") {
+ 				if (a != "true") {
+-					window.external.saveString(g_bShowAds, "true")
++					//window.external.saveString(g_bShowAds, "true")
++					g_bShowAds = "true";
+ 				}
+ 				d = "ead_dictr_ins"
+ 			} else {
+-				window.external.saveString(g_bShowAds, "false")
++				//window.external.saveString(g_bShowAds, "false")
++				g_bShowAds = "false";
+ 			}
+ 		}
+ 		return d
+@@ -5655,7 +5660,7 @@
+ 					j;
+ 					var f = this.tabsContainer + " span.tabs a";
+ 					var h = this;
+-					b("#deskdict_main").delegate(f, "click",
++					b("#results").delegate(f, "click",
+ 					function() {
+ 						l = b(f + ".tab-current");
+ 						g = b(l.attr("rel"));
+@@ -5692,7 +5697,7 @@
+ 			}
+ 		})(),
+ 		collapse: function(e, f, d) {
+-			b("#deskdict_main").delegate(e + " " + f, "click",
++			b("#results").delegate(e + " " + f, "click",
+ 			function(g) {
+ 				b(this).closest(e).toggleClass(d);
+ 				b(this).blur();
+@@ -5701,7 +5706,7 @@
+ 		},
+ 		toggle: function() {
+ 			var d = this;
+-			b("#deskdict_main").delegate("a.toggle", "click",
++			b("#results").delegate("a.toggle", "click",
+ 			function() {
+ 				b(this).toggleClass("toggleOpen");
+ 				b(b(this).attr("rel")).toggle();
+@@ -5760,7 +5765,7 @@
+ 		},
+ 		resetPosAndTextSelect: function() {
+ 			document.documentElement.scrollTop = 0;
+-			document.selection.empty()
++			//document.selection.empty()
+ 		},
+ 		submitContent: function(f, d, e, h) {
+ 			var g = {
+@@ -6067,10 +6072,12 @@
+ 	dict.dU.ns("dict.eti");
+ 	dict.eti = {
+ 		loadString: function(a) {
+-			return window.external.loadString(a)
++			//return window.external.loadString(a)
++			return a;
+ 		},
+ 		saveString: function(a, b) {
+-			window.external.saveString(a, b)
++			//window.external.saveString(a, b)
++			a = b;
+ 		},
+ 		savePicture: function(a, b) {
+ 			window.external.saveWordPicture(a, b)
+@@ -6327,22 +6334,27 @@
+ 	};
+ 	window.playVoice = function(c) {
+ 		dict.video.stop();
+-		window.external.playSound(c)
++		//window.external.playSound(c)
++		var ado = document.getElementById("my_sound");
++		ado.setAttribute("src",c);
++		ado.play();
+ 	};
+ 	window.stopVoice = function() {
+-		window.external.stopSound()
++		//window.external.stopSound()
++		document.getElementById("my_sound").ended = true;
+ 	};
+ 	window.isFalshReady = function() {
+-		window.external.isFlashReady()
++		//window.external.isFlashReady()
++		return true;
+ 	};
+ 	dict.video = {
+ 		initVideoDelegate: function() {
+-			$("#deskdict_main").delegate("#example_content .video a.play, #yuansheng .video a.play", "click",
++			$("#results").delegate("#example_content .video a.play, #yuansheng .video a.play", "click",
+ 			function(c) {
+ 				b($(this));
+ 				c.preventDefault()
+ 			});
+-			$("#deskdict_main").delegate("#example_content .video a.close, #yuansheng .video a.close", "click",
++			$("#results").delegate("#example_content .video a.close, #yuansheng .video a.close", "click",
+ 			function(c) {
+ 				a($(this));
+ 				c.preventDefault()
+@@ -6764,11 +6776,11 @@
+ 		dict.dU.collapse("#collinsResult .pr-container", ".more", "more-collapse")
+ 	};
+ 	var h = function() {
+-		$("#deskdict_main").delegate("#example_content ul.ol li p span, #bilingual ul.ol li p span", "mouseover",
++		$("#results").delegate("#example_content ul.ol li p span, #bilingual ul.ol li p span", "mouseover",
+ 		function() {
+ 			$($(this).data("aligning")).addClass("highLight")
+ 		});
+-		$("#deskdict_main").delegate("#example_content ul.ol li p span, #bilingual ul.ol li p span", "mouseout",
++		$("#results").delegate("#example_content ul.ol li p span, #bilingual ul.ol li p span", "mouseout",
+ 		function() {
+ 			$($(this).data("aligning")).removeClass("highLight")
+ 		})
+@@ -6791,7 +6803,7 @@
+ 				j();
+ 				b();
+ 				l();
+-				GetAdsByTimer();
++				//GetAdsByTimer();
+ 				hideLoadMsg();
+ 				var q = dict.eti.loadString(dC.curWebTranStatus);
+ 				if (q == "1") {
+@@ -6801,7 +6813,7 @@
+ 					}
+ 				}
+ 				d();
+-				dict.ugc.init()
++				//dict.ugc.init()
+ 			},
+ 			0)
+ 		} catch(p) {}
+@@ -6846,7 +6858,7 @@
+ 			});
+ 			h();
+ 			dict.dU.toggle();
+-			$("#deskdict_main").delegate("#tWebTrans div.title a.do-detail,#tWebTrans div.title span", "click",
++			$("#results").delegate("#tWebTrans div.title a.do-detail,#tWebTrans div.title span", "click",
+ 			function() {
+ 				var r = $("#tWebTrans div.wt-container");
+ 				if (r.eq(0).hasClass("wt-collapse")) {
+@@ -6855,7 +6867,7 @@
+ 					dict.eti.saveString(dC.webTransFirstSubStatus, "dontCollapse")
+ 				}
+ 			});
+-			$("#deskdict_main").delegate("#tPETrans-type-list .p-type", "click",
++			$("#results").delegate("#tPETrans-type-list .p-type", "click",
+ 			function(r) {
+ 				$("#tPETrans-all-trans>li").hide();
+ 				$("#tPETrans-type-list a.selected_link").removeClass("selected_link");
+@@ -6879,12 +6891,19 @@
+ 		$("#actionTips").fadeOut()
+ 	};
+ 	window.toggleFav = function(p) {
++		if (p == "0") {
++			p = null;
++			INBOOK = 0;
++		} else if (p == "1") {
++			INBOOK = 1;
++		}
++
+ 		var o = $(".add-fav").attr("ref");
+ 		p ? $(".add-fav").addClass("add-faved").attr({
+-			href: "app:modword:" + o,
+-			title: "单词[" + o + "]已添加到单词本，点击修改"
++			href: "~" + o,
++			title: "单词[" + o + "]已添加到单词本"
+ 		}) : $(".add-fav").removeClass("add-faved").attr({
+-			href: "app:addword:" + o,
++			href: "~" + o,
+ 			title: "添加到单词本"
+ 		})
+ 	};

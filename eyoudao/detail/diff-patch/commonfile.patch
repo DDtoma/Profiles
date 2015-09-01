@@ -1,0 +1,317 @@
+--- commonfile-src.xsl	2012-03-16 23:05:19.438374008 +0800
++++ commonfile.xsl	2012-03-16 23:06:03.642375479 +0800
+@@ -12,16 +12,9 @@
+ 		<xsl:attribute name="title">发音</xsl:attribute>
+ 		<xsl:attribute name="href">#</xsl:attribute>
+ 		<xsl:attribute name="ref">http://dict.youdao.com/dictvoice?audio=<xsl:value-of select="text()"/>&amp;keyfrom=deskdict.<xsl:value-of select="$keyfrom"/></xsl:attribute>
+-		<xsl:attribute name="onmouseover">this.style.cursor='hand';playVoice(this.ref);return true;</xsl:attribute>
+-		<xsl:attribute name="onmouseout">stopVoice(this.ref);return true;</xsl:attribute>
+-		<xsl:attribute name="onclick">playVoice(this.ref);return true;</xsl:attribute>
+-	</xsl:element>
+-	<xsl:element name="span">
+-		<xsl:attribute name="id">noSound<xsl:value-of select="$objId"/></xsl:attribute>
+-		<xsl:attribute name="style">display:none</xsl:attribute>
+-		<a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" target="_blank">
+-			<IMG SRC="images/nosound.gif" WIDTH="17" HEIGHT="17" BORDER="0" ALT="想启用英文朗读功能吗？请先安装flash插件！" align="absmiddle" />
+-		</a>
++		<xsl:attribute name="onmouseover">this.style.cursor='hand';playVoice(this.getAttribute('ref'));return false;</xsl:attribute>
++		<xsl:attribute name="onmouseout">stopVoice(this.getAttribute('ref'));return false;</xsl:attribute>
++		<xsl:attribute name="onclick">playVoice(this.getAttribute('ref'));return false;</xsl:attribute>
+ 	</xsl:element>
+ 	</xsl:if>
+ </xsl:template>
+@@ -36,13 +29,13 @@
+ 		<xsl:attribute name="title">点击发音</xsl:attribute>
+ 		<xsl:attribute name="href">#</xsl:attribute>
+ 		<xsl:attribute name="ref">http://dict.youdao.com/dictvoice?audio=<xsl:value-of select="text()"/>&amp;keyfrom=deskdict.<xsl:value-of select="$keyfrom"/></xsl:attribute>
+-		<xsl:attribute name="onclick">playVoice(this.ref);return false;</xsl:attribute>
++		<xsl:attribute name="onclick">playVoice(this.getAttribute('ref'));return false;</xsl:attribute>
+ 	</xsl:element>
+ 	<xsl:element name="span">
+ 		<xsl:attribute name="id">noSound<xsl:value-of select="$objId"/></xsl:attribute>
+ 		<xsl:attribute name="style">display:none</xsl:attribute>
+ 		<a href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" target="_blank">
+-			<IMG SRC="images/nosound.gif" WIDTH="17" HEIGHT="17" BORDER="0" ALT="想启用英文朗读功能吗？请先安装flash插件！" align="absmiddle" />
++			<IMG SRC="file:///opt/eyoudao/detail/images/nosound.gif" WIDTH="17" HEIGHT="17" BORDER="0" ALT="想启用英文朗读功能吗？请先安装flash插件！" align="absmiddle" />
+ 		</a>
+ 	</xsl:element>
+ 	</xsl:if>
+@@ -104,7 +97,7 @@
+   <p class="additional">
+     <xsl:element name="a">
+       <xsl:attribute name="href">
+-        app:dsdetail:<xsl:value-of select="/yodaodict/return-phrase" />
++        <xsl:value-of select="/yodaodict/return-phrase" />
+       </xsl:attribute>
+       <xsl:attribute name="target">_self</xsl:attribute>
+       <xsl:choose>
+@@ -119,7 +112,7 @@
+     </xsl:element>
+     <xsl:element name="a">
+       <xsl:attribute name="href">
+-        app:dsdetail:<xsl:value-of select="/yodaodict/return-phrase" />
++        <xsl:value-of select="/yodaodict/return-phrase" />
+       </xsl:attribute>
+       <xsl:attribute name="target">_self</xsl:attribute>
+       <xsl:attribute name="class">enter</xsl:attribute>
+@@ -206,7 +199,7 @@
+ 	<div>
+ 		<xsl:element name="a">
+       <xsl:attribute name="class">see_more</xsl:attribute>
+-			<xsl:attribute name="href">app:bks:<xsl:value-of select="$key"/></xsl:attribute>
++			<xsl:attribute name="href"><xsl:value-of select="$key"/></xsl:attribute>
+ 			<xsl:attribute name="target">_self</xsl:attribute>
+ 			更多与"<xsl:value-of select="$key"/>"相关的百科词条&gt;&gt;
+ 		</xsl:element>
+@@ -249,13 +242,13 @@
+               javascript:ctlog(this, '<xsl:call-template name="standard_return_phrase" />', '0', '<xsl:value-of select="/yodaodict/keyfrom"/>', 0, 'CLICK', "<xsl:value-of select="$ctype_title" />")
+             </xsl:attribute>
+             <xsl:value-of select="$key" />
+-            <img src="images/outlink.gif" border="0"/>
++			<img src="file:///opt/eyoudao/detail/images/outlink.gif" border="0"/>
+           </xsl:element>
+         </xsl:when>
+         <xsl:otherwise>
+           <xsl:element name="a">
+             <xsl:attribute name="href">
+-              app:bk:<xsl:value-of select="$key" />
++              <xsl:value-of select="$key" />
+             </xsl:attribute>
+             <xsl:attribute name="class">title</xsl:attribute>
+             <xsl:attribute name="target">_self</xsl:attribute>
+@@ -287,7 +280,7 @@
+                   javascript:ctlog(this, '<xsl:call-template name="standard_return_phrase" />', '0', '<xsl:value-of select="/yodaodict/keyfrom"/>', 0, 'CLICK', "<xsl:value-of select="$ctype_external" />")
+                 </xsl:attribute>
+                 <xsl:value-of select="external-link/name" />
+-                <img src="images/outlink.gif" border="0"/>
++				<img src="file:///opt/eyoudao/detail/images/outlink.gif" border="0"/>
+               </xsl:element>
+             </xsl:when>
+             <xsl:otherwise>
+@@ -295,7 +288,7 @@
+                 <xsl:element name="a">
+                   <xsl:attribute name="class">see_more</xsl:attribute>
+                   <xsl:attribute name="href">
+-                    app:bk:<xsl:value-of select="$key" />
++                    <xsl:value-of select="$key" />
+                   </xsl:attribute>
+                   <xsl:attribute name="target">_self</xsl:attribute>
+                   详细内容
+@@ -413,19 +406,10 @@
+ 				<xsl:attribute name="title">加入单词本</xsl:attribute>
+ 				<xsl:attribute name="id">addFav</xsl:attribute>
+ 				<xsl:attribute name="ref"><xsl:value-of select="$keyword"/></xsl:attribute>
+-				<xsl:attribute name="href">app:addword:<xsl:value-of select="$keyword" disable-output-escaping="yes"/></xsl:attribute>
+-				<xsl:attribute name="onclick">ctlog('', '' , 0, 'deskdict.main' , 1, 'CLICK',  'WordBook');</xsl:attribute>
++				<xsl:attribute name="href"><xsl:value-of select="$keyword" disable-output-escaping="yes"/></xsl:attribute>
++				<xsl:attribute name="onclick">if (INBOOK == 1) return false;else return true;</xsl:attribute>
+ 			</xsl:element>
+ 			</xsl:if>
+-			<xsl:if test="$showfeedback = 'true'">
+-				<span id="rptErrSucceed" class="tipDevotion errorTip" style="display:none"></span>
+-				<xsl:element name="a">
+-					<xsl:attribute name="href">#</xsl:attribute>
+-					<xsl:attribute name="title">报错</xsl:attribute>
+-					<xsl:attribute name="class">tipDevotion errorTip rptErrLink</xsl:attribute>
+-					报错
+-				</xsl:element>
+-			</xsl:if>
+ 		</h2>
+ 	</xsl:if>
+ 
+@@ -481,7 +465,7 @@
+ 				<xsl:attribute name="title">加入单词本</xsl:attribute>
+ 				<xsl:attribute name="id">addFav</xsl:attribute>
+ 				<xsl:attribute name="ref"><xsl:value-of select="$keyword"/></xsl:attribute>
+-				<xsl:attribute name="href">app:addword:<xsl:value-of select="$keyword"/></xsl:attribute>
++				<xsl:attribute name="href"><xsl:value-of select="$keyword"/></xsl:attribute>
+ 			</xsl:element>
+ 			</xsl:if>
+ 		  </h5>
+@@ -499,7 +483,7 @@
+ 		 		<xsl:choose>
+ 				 <xsl:when test="@href">
+ 					<xsl:element name="a">
+-						<xsl:attribute name="href"><xsl:value-of select="@href"/></xsl:attribute>
++						<xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+ 						<xsl:attribute name="target"><xsl:value-of select="@target"/></xsl:attribute>
+ 						<xsl:choose>
+ 						<xsl:when test="l">
+@@ -513,7 +497,7 @@
+ 				</xsl:when>
+ 				<xsl:otherwise>
+ 					<xsl:element name="a">
+-						<xsl:attribute name="href">app:ds:<xsl:value-of select="." /></xsl:attribute>
++						<xsl:attribute name="href"><xsl:value-of select="." /></xsl:attribute>
+ 						<xsl:value-of select="." />
+ 					</xsl:element>
+ 				</xsl:otherwise>
+@@ -597,7 +581,7 @@
+ 		
+ 			<xsl:if test="similar-words">
+ 				<div class="attr">
+-				  <IMG SRC="images/pointd.gif" WIDTH="5" HEIGHT="5" BORDER="0" ALT="" align="absmiddle"/>
++					<IMG SRC="file:///opt/eyoudao/detail/images/pointd.gif" WIDTH="5" HEIGHT="5" BORDER="0" ALT="" align="absmiddle"/>
+ 				<font class="dot">. </font>
+ 				<B>近义词或词组</B>
+ 			  </div>		
+@@ -606,7 +590,7 @@
+ 					<xsl:for-each select="similar-words/similar">
+ 						<xsl:if test="position() &lt;= 4" >
+ 						<xsl:element name="a">
+-							<xsl:attribute name="href">app:ds:<xsl:value-of select="." /></xsl:attribute>
++							<xsl:attribute name="href"><xsl:value-of select="." /></xsl:attribute>
+ 							<xsl:attribute name="class">blue12other</xsl:attribute>
+ 							<xsl:attribute name="target">_self</xsl:attribute>
+ 							<xsl:value-of select="." />
+@@ -620,7 +604,7 @@
+ 						<xsl:if test="position() &gt; 4" >
+ 							 | 
+ 							<xsl:element name="a">
+-								<xsl:attribute name="href">app:ds:<xsl:value-of select="." /></xsl:attribute>
++								<xsl:attribute name="href"><xsl:value-of select="." /></xsl:attribute>
+ 								<xsl:attribute name="class">blue12other</xsl:attribute>
+ 								<xsl:attribute name="target">_self</xsl:attribute>
+ 								<xsl:value-of select="." />
+@@ -632,7 +616,7 @@
+ 						<xsl:element name="span">
+ 							<xsl:attribute name="id">showmoreSimwords</xsl:attribute>
+ 							<font class="dot"> . </font>
+-							<IMG SRC="images/dictrstarbu.gif" WIDTH="4" HEIGHT="8" BORDER="0" ALT="展开" align="absmiddle"/>
++							<IMG SRC="file:///opt/eyoudao/detail/images/dictrstarbu.gif" WIDTH="4" HEIGHT="8" BORDER="0" ALT="展开" align="absmiddle"/>
+ 							<xsl:element name="a">
+ 		  	 				<xsl:attribute name="href">javascript:void(0)</xsl:attribute>
+ 			   				<xsl:attribute name="title">点击查看更多的近义词</xsl:attribute>
+@@ -645,7 +629,7 @@
+ 							<xsl:attribute name="id">hidemoreSimwords</xsl:attribute>
+ 							<xsl:attribute name="style">display:none</xsl:attribute>
+ 							<font class="dot"> . </font>
+-							<IMG SRC="images/dictlstarbu.gif" WIDTH="4" HEIGHT="8" BORDER="0" ALT="隐藏更多" align="absmiddle"/>
++							<IMG SRC="file:///opt/eyoudao/detail/images/dictlstarbu.gif" WIDTH="4" HEIGHT="8" BORDER="0" ALT="隐藏更多" align="absmiddle"/>
+ 							<xsl:element name="a">
+ 		  	 				<xsl:attribute name="href">javascript:void(0)</xsl:attribute>
+ 		   					<xsl:attribute name="class">blue12other</xsl:attribute>
+@@ -659,7 +643,7 @@
+ 			<xsl:if test="/yodaodict/basic/type[text()='trans']">
+ 			<br/>
+ 			<span style="color:#666666">
+-			来自<xsl:element name="a"><xsl:attribute name="href">app:trans:<xsl:value-of select="/yodaodict/return-phrase" /></xsl:attribute>有道翻译</xsl:element>的自动转换
++			来自<xsl:element name="a"><xsl:attribute name="href"><xsl:value-of select="/yodaodict/return-phrase" /></xsl:attribute>有道翻译</xsl:element>的自动转换
+ 			</span>
+ 			</xsl:if>
+ 	</xsl:for-each>
+@@ -703,7 +687,7 @@
+ 		</xsl:if>
+ 		<xsl:if test="count(../i) &gt; 1">
+ 			<xsl:if test="not(f)">
+-        <img src="images/displaypoint.gif" alt="" width="13" align="absmiddle" border="0" height="20" />
++				<img src="file:///opt/eyoudao/detail/images/displaypoint.gif" alt="" width="13" align="absmiddle" border="0" height="20" />
+       </xsl:if>
+      
+ 		</xsl:if>
+@@ -727,7 +711,7 @@
+ 		<div class="meaning">
+ 			<xsl:for-each select="i">
+ 					<xsl:element name="a">
+-						<xsl:attribute name="href">app:ds:<xsl:value-of select="." /></xsl:attribute>
++						<xsl:attribute name="href"><xsl:value-of select="." /></xsl:attribute>
+ 						<xsl:value-of select="." />
+ 					</xsl:element> <font class="dot"> . </font>
+ 			</xsl:for-each>
+@@ -748,7 +732,7 @@
+ 			<xsl:for-each select="i">
+ 				<span style="margin-left:5px;">
+ 					<xsl:element name="a">
+-						<xsl:attribute name="href">app:ds:<xsl:value-of select="." /></xsl:attribute>
++						<xsl:attribute name="href"><xsl:value-of select="." /></xsl:attribute>
+ 						<xsl:value-of select="." />
+ 					</xsl:element>
+ 				</span>
+@@ -776,7 +760,7 @@
+ 				<!-- 直接输出 -->			
+ 				<xsl:if test="text() != ''">
+ 					<xsl:element name="a">
+-						<xsl:attribute name="href">app:ds:<xsl:value-of select="." /></xsl:attribute>
++						<xsl:attribute name="href"><xsl:value-of select="." /></xsl:attribute>
+ 						<xsl:value-of select="." />
+ 					</xsl:element>
+ 				</xsl:if>
+@@ -993,7 +977,7 @@
+ <div class="trans-container">
+ 	<xsl:for-each select="word">
+ 		<xsl:if test="position() &gt; 1" >
+-			<div style="overflow:hidden;height:1px;background:url(images/cidian_point_empty.gif) repeat-x;margin-top:10px;clear:both"/>
++			<div style="overflow:hidden;height:1px;background:url(detail/images/cidian_point_empty.gif) repeat-x;margin-top:10px;clear:both"/>
+ 		</xsl:if>
+ 		<div id="classic" >
+ 			<!-- 输出关键词、音标、发音小喇叭 -->
+@@ -1428,7 +1412,7 @@
+                 ctlog(this, '<xsl:call-template name="standard_return_phrase" />' , 0, 'deskdict.main.cizu' , 1, 'CLICK',  '点击词组短语');
+               </xsl:attribute>
+               <xsl:attribute name="href">
+-                app:dsdetail:<xsl:value-of select="headword" />
++                <xsl:value-of select="headword" />
+               </xsl:attribute>
+               <xsl:value-of select="headword" />
+             </xsl:element>
+@@ -1448,7 +1432,7 @@
+                   ctlog(this, '<xsl:call-template name="standard_return_phrase" />' , 0, 'deskdict.main.cizu' , 1, 'CLICK',  '点击词组短语');
+                 </xsl:attribute>
+                 <xsl:attribute name="href">
+-                  app:dsdetail:<xsl:value-of select="headword" />
++                  <xsl:value-of select="headword" />
+                 </xsl:attribute>
+                 <xsl:value-of select="headword" />
+               </xsl:element>
+@@ -1671,7 +1655,7 @@
+ 								<xsl:attribute name="ref">
+ 									<xsl:value-of select="snippets/snippet/streamUrl"/>&amp;keyfrom=deskdict.<xsl:value-of select="yodaodict/keyfrom"/>
+ 								</xsl:attribute>
+-								<xsl:attribute name="onclick">playVoice(this.ref);javascript:ctlog("", '<xsl:call-template name="standard_return_phrase"/>', "<xsl:number value="position()"/>", "<xsl:value-of select="/yodaodict/keyfrom"/>", 1, 'CLICK', '音频例句点击发音_'+'<xsl:value-of select="$keyfrom"/>');return false;</xsl:attribute>
++								<xsl:attribute name="onclick">playVoice(this.getAttribute('ref'));return false;javascript:ctlog("", '<xsl:call-template name="standard_return_phrase"/>', "<xsl:number value="position()"/>", "<xsl:value-of select="/yodaodict/keyfrom"/>", 1, 'CLICK', '音频例句点击发音_'+'<xsl:value-of select="$keyfrom"/>');return false;</xsl:attribute>
+ 							</xsl:element>
+ 						</p>
+ 						<xsl:if test="chn"><p><xsl:value-of select="chn" disable-output-escaping="yes"/></p></xsl:if>
+@@ -1690,7 +1674,7 @@
+ 									<xsl:attribute name="src"><xsl:value-of select="snippets/snippet/imageUrl"/></xsl:attribute>
+ 									<xsl:attribute name="alt">点击播放</xsl:attribute>
+ 								</xsl:element>
+-								<span class="playicon"><img src="CSS/play.png"/></span>
++								<span class="playicon"><img src="file:///opt/eyoudao/detail/css/play.png"/></span>
+ 							</a>
+ 							<a href="javascript:void(0);" class="close"></a>
+ 						</div>
+@@ -1791,7 +1775,7 @@
+               </xsl:apply-templates>
+ 			  <xsl:element name="a">
+ 				<xsl:attribute name="class">more-example</xsl:attribute>
+-				<xsl:attribute name="href">app:lj:<xsl:value-of select="$inputEncode"/>?ljtype=blng&amp;ljblngcont=0</xsl:attribute>
++				<xsl:attribute name="href"><xsl:value-of select="$inputEncode"/>?ljtype=blng&amp;ljblngcont=0</xsl:attribute>
+           <xsl:attribute name="onclick">
+             ctlog('', '<xsl:call-template name="standard_return_phrase" />' , 0, 'deskdict.main.morelj.blng' , 1, 'CLICK',  '点击更多双语例句');
+         </xsl:attribute>
+@@ -1807,7 +1791,7 @@
+ 
+       <xsl:element name="a">
+         <xsl:attribute name="class">more-example</xsl:attribute>
+-        <xsl:attribute name="href">app:lj:<xsl:value-of select="$inputEncode"/>?ljtype=mdia&amp;ljmdia=0</xsl:attribute>
++        <xsl:attribute name="href"><xsl:value-of select="$inputEncode"/>?ljtype=mdia&amp;ljmdia=0</xsl:attribute>
+         <xsl:attribute name="onclick">
+           ctlog('', '<xsl:call-template name="standard_return_phrase" />' , 0, 'deskdict.main.morelj.mdia' , 1, 'CLICK',  '点击更多原声例句');
+         </xsl:attribute>
+@@ -1822,7 +1806,7 @@
+       </xsl:apply-templates>
+       <xsl:element name="a">
+         <xsl:attribute name="class">more-example</xsl:attribute>
+-        <xsl:attribute name="href">app:lj:<xsl:value-of select="$inputEncode"/>?ljtype=auth</xsl:attribute>
++        <xsl:attribute name="href"><xsl:value-of select="$inputEncode"/>?ljtype=auth</xsl:attribute>
+         <xsl:attribute name="onclick">
+           ctlog('', '<xsl:call-template name="standard_return_phrase" />' , 0, 'deskdict.main.morelj.auth' , 1, 'CLICK',  '点击更多权威例句');
+         </xsl:attribute>
+@@ -1935,4 +1919,4 @@
+   </div>
+ </xsl:template>
+ 
+-</xsl:stylesheet>
+\ 文件尾没有 newline 字符
++</xsl:stylesheet>

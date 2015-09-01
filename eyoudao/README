@@ -1,0 +1,79 @@
+linux环境goldendict词典的有道扩展程序eyoudao 1.0使用说明
+（从第一版的youdaodict重新命名为eyoudao，版本为1.0，基于windows有道词典的5.0.32.4695版本）
+
+
+一，安装：
+1，安装goldendict和两个函数库（goldendict版本可能要求1.0.1以上才能使用扩展程序）：
+sudo apt-get install goldendict libxml2-dev libxslt1-dev
+
+2，然后eyoudao目录下：
+make
+sudo make install
+
+3，最后打开goldendict词典，菜单栏的编辑选项 -> Dictionaries -> 词典来源 -> Programs
+添加一栏：
+-	Html	eyoudao-detail	eyoudao -detail "%GDWORD%"
+
+
+二，卸载:
+1，在/opt/eyoudao目录下执行：
+sudo make uninstall
+即可。
+2，注意，在$HOME目录下的.eyoudao隐藏文件夹不会被删除，内含单词本wordsbook和一个临时查询文件query.tmp。
+
+
+三，关于很多的bugs：
+1，保存单词的时候，会导致goldendict在该单词前加上~后重新查询。这会影响其他词典的使用。
+2，eyoudao-simple没有做了。个人2M的联通宽带，感觉速度还能接受。
+3，查询单词出现's结尾的时候，看到返回的单词是错误的，无法添加到单词本。
+其实这个错误在dict.youdao.com都是一样的，但what's和it's这些就没错。
+4，如果还遇到各种的bugs，莫要惊慌，自己动手修改。
+
+
+
+四，版权声明：
+xml数据和各种xsl,js,css,png文件都是修改或源自windows的有道词典安装文件，使用时注意版权问题。
+xslt是仿照官网的一个demo改写的。
+本扩展程序仅供学习交流之用。
+
+
+五，关于本程序：
+eyoudao 1.0 By Onway 2012-03-16
+debug yourself or report to
+aluohuai@126.com
+www.cppblog.com/onway
+
+
+六，有道词典安装文件的大致修改过程：
+1，在windows有道词典的安装目录resultui下，拷贝出来三个文件夹：css,js,images,两个文件result.xsl和commonfile.xsl
+2，js目录将all-min.js解压为default.js，删除wordBook.js
+3，commonfile.xsl的修改：
+	a，将声音播放相关的函数调用改掉参数为this.getAttribute('ref')
+	b，删掉报错显示（不太厚道啊！）和flash检测
+	c，将所有的关于css/和images/目录文件的引用改为本地文件协议的绝对路径
+	d，去掉所有app:.*:
+4，result.xsl的修改：
+	a，以本地文件协议的绝对路径加入default.css和default.js的引用
+	b，加入<audio>标签用作发音
+	c，将所有的app:.*:去掉
+	d，结尾加入一段javascript，调用三个函数
+5，default.js的修改
+	a，加入全局变量INBOOK
+	b，ctlog函数直接返回false
+	c，修改所有window.external.loadString和window.external.saveString
+	d，将deskdict_main修改为results
+	e，注释掉window.selection.empty
+	f，playVoice函数更改内容
+	g，isFlashReady函数直接返回true
+	h，注释掉GetAdsByTimer函数的调用
+	i，注释掉dict.ugc.init的调用
+	j，在toggleFav函数加入一段关于本地单词本的代码
+6，更详细的修改参见detail/diff-patch目录下的patch文件。
+
+
+7，附：
+其实为了保存单词，我还写了一个100行多点的多线程网络程序，以利用ajax跟本地程序通信。
+但很郁闷的是，goldendict以访问网站得来的结果显示的时候有些bug。导航条不能用了，页面低下出现一大片空白。
+从goldendict保存出来的html文件跟在浏览器看到明显不一样。
+我之所以确定是goldendict的问题，是因为我试过将改好的网页文件从apache服务器发回goldendict都是出现同样的问题。
+而从浏览器访问apache服务器则是正常的。

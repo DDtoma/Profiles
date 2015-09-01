@@ -1,0 +1,54 @@
+#!/bin/bash
+
+xmldetail="http://dict.youdao.com/search?keyfrom=deskdict.main&xmlDetail=true&doctype=xml&xmlVersion=7.1&dogVersion=1.0&client=deskdict&appVer=5.0.32.4695&xslVer=3.0&q="
+xsldetail="detail/result.xsl"
+xmlsimple=""
+xslsimple=""
+
+add_to_book() {
+	word=${1#*~}
+	t=`date +'%y-%m-%d %H:%M'`
+	echo "$word;$t" >> $HOME/.eyoudao/wordsbook
+}
+
+if [ $# != 2 ] ; then
+	echo "usage:$0 <-detail|-simple> <keyword>"
+	exit 1
+fi
+
+cd /opt/eyoudao
+
+if [ ! -d $HOME/.eyoudao ] ; then
+	mkdir $HOME/.eyoudao
+fi
+if [ ! -f $HOME/.eyoudao/wordsbook ] ; then
+	touch $HOME/.eyoudao/wordsbook
+fi
+
+if [ "$1" == "-detail" ] ; then
+	echo $2 | grep -q "^~.*"
+	if [ $? == 0 ] ; then
+		cat $HOME/.eyoudao/query.tmp
+		add_to_book $2
+		exit 0
+	else
+		cut -d ';' -f 1 $HOME/.eyoudao/wordsbook | grep -q "^$2"
+		if [ $? == 0 ] ; then
+			./xslt "-xmlapi" "$xmldetail" "-xslapi" \
+				"$xsldetail" "-keyword" "$2" | sed '$d' 
+		else
+			old='dict.result.init();main();toggleFav("1");'
+			new='dict.result.init();main();toggleFav("0");'
+			./xslt "-xmlapi" "$xmldetail" "-xslapi" \
+				"$xsldetail" "-keyword" "$2" | sed '$d' \
+				| tee $HOME/.eyoudao/query.tmp | sed "s/$old/$new/g"
+		fi
+	fi
+elif [ "$1" == "-simple" ] ; then
+	echo ""
+else
+	echo "unkonw argument:$1"
+	echo "usage:$0 <-detail|-simple> <keyword>"
+	exit 1
+fi
+
