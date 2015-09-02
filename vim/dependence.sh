@@ -5,7 +5,7 @@ i=0
 length=${#dependence_data[@]}
 
 for dp in ${!dependence_data[@]}; do
-    tem_data[$dp]=`pacman -Qsq ^${dependence_data[$dp]}`
+    tem_data[$dp]=`pacman -Qsq ^${dependence_data[$dp]} | head -n 1`
 done
 
 echo 'vim dependence...'

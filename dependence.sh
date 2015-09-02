@@ -3,13 +3,16 @@ dependence_data[0]="git"
 dependence_data[1]="yaourt"
 i=0
 length=${#dependence_data[@]}
+for dp in ${!dependence_data[@]}; do
+    tem_data[$dp]=`pacman -Qsq ^${dependence_data[$dp]} | head -n 1`
+done
+
 while [ $i -lt $length ]; do
-    if ! type ${dependence[i]}> /dev/null 2>&1;then
-        echo "dont have ${dependence_data[i]}"
-        echo "please use $HOME/Pofiles/sys.sh to install dependences"
-        error=1
+    if [[ "${dependence_data[i]}" = "${tem_data[$i]}" ]]; then
+        echo "${dependence_data[$i]} is OK"
     else
-        echo "${dependence_data[i]} is OK"
+        echo "dont have ${dependence_data[i]}"
+        echo ${dependence_data[$i]} >> $HOME/Profiles/no_dp
     fi
     let "i++"
 done

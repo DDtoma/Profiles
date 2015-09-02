@@ -8,7 +8,7 @@ length=${#dependence_data[@]}
 
 echo 'emacs dependence...'
 for dp in ${!dependence_data[@]}; do
-    tem_data[$dp]=`pacman -Qsq ^${dependence_data[$dp]}`
+    tem_data[$dp]=`pacman -Qsq ^${dependence_data[$dp]} | head -n 1`
 done
 
 while [ $i -lt $length ]; do
