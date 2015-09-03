@@ -52,7 +52,11 @@ case $1 in
     -d|--install-dependence)
         if [[ -n `cat $HOME/Profiles/no_dp` ]]; then
             echo "please install dependences"
+<<<<<<< HEAD
             sudo pacman -S $(cat $HOME/no_dp)
+=======
+            sudo pacman -S $(cat $HOME/Profiles/no_dp)
+>>>>>>> f8c0bc695dcf94004fc60b4a2d8a8c207dc38926
         else
             echo "-----dependence is OK------"
         fi
