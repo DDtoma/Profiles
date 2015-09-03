@@ -18,7 +18,7 @@ while [ $i -lt $length ]; do
         echo "${dependence_data[$i]} is OK"
     else
         echo "dont have ${dependence_data[i]}"
-        echo ${dependence_data[$i]} >> $HOME/Profiles/no_dp
+        echo ${dependence_data[$i]} >> $HOME/no_dp
     fi
     let "i++"
 done
