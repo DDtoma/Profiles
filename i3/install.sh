@@ -13,4 +13,5 @@ else
 fi
 
 ln -s $HOME/Profile/i3/.mobarrc $Home/.xmobarrc
+unset path
 

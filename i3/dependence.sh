@@ -5,6 +5,8 @@ dependence_data[1]="i3status"
 dependence_data[2]="j4-dmenu-desktop"
 dependence_data[3]="xmobar"
 dependence_data[4]="pulseaudio"
+dependence_data[5]="feh"
+dependence_data[6]="i3lock"
 i=0
 length=${#dependence_data[@]}
 
